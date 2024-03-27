@@ -48,7 +48,7 @@ void MainWindow::on_start_clicked()
 
     GameState *state = new GameState(9, player1->getPlayerNumber());
     Board *board = new Board(state);
-    Game *game = new Game(player1, player2, player3, player4, board, state);
+    Game *game = new Game(player1, player2, player3, player4, board, state, this);
 
     Widget *window;
     window = new Widget(board, game);
