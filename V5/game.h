@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <QTimer>
 #include <QTime>
+#include <QTextEdit>
 
 class Game : public QWidget
 {
@@ -25,7 +26,7 @@ private:
     Player *nextPlayer1;
     Player *nextPlayer2;
     Board *board;
-
+    QTextEdit *messageBox;
     GameLogic *logic;
     GameState *state;
     void setNextMove(int&);
@@ -36,9 +37,13 @@ private:
 public:
     Game(Player*, Player*, Player*, Player*, Board*, GameState*, QWidget *parent = 0);
     QTimer *timer;
+    Q_SIGNAL void messageChanged(const QString &message);
     int nextMove;
     void changePlayers();
     void delay(int);
+    void setMessageBox(QTextEdit *messageBox) {
+        this->messageBox = messageBox;
+    }
 
 public slots:
     void nextRound();
