@@ -22,10 +22,11 @@ signals:
 public slots:
 
 private slots:
-
+    void updateMessageBox(const QString &message);
 private:
     QComboBox *combo1, *combo2;
     QLabel *statusLabel;
+    QTextEdit *messageBox;
 
 };
 
