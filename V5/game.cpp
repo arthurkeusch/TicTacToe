@@ -85,6 +85,14 @@ void Game::nextRound()
         }
     } else {
         timer->stop();
+        if (logic->gameWon(state)) {
+            QString message = "La partie est terminée. Le joueur " + QString::number(state->otherPlayer(state->getCurrentPlayer())) + " a gagné!";
+            emit messageChanged(message);
+        }
+        else if (logic->gameOver(state)) {
+            QString message = "La partie est terminée. Aucun coup n'est possible.";
+            emit messageChanged(message);
+        }
         std::vector<std::string> data = readFile("data.txt");
         if (logic->gameWon(state)) {
             if (state->otherPlayer(state->getCurrentPlayer()) == 1) {
