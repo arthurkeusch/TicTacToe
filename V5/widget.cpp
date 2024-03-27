@@ -21,6 +21,10 @@ Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
 
     statusLabel = new QLabel("Have Fun", this);
 
+    // Créez un QTextEdit pour afficher les messages
+    messageBox = new QTextEdit(this);
+    messageBox->setReadOnly(true);
+
     QPushButton *quit = new QPushButton("Quit", this);
     QPushButton *restart = new QPushButton("Restart", this);
 
@@ -48,6 +52,7 @@ Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
     buttons->addWidget(quit);
 
     vbox->addLayout(buttons);
+    vbox->addWidget(messageBox);
 
     hbox->addLayout(vbox);
 
@@ -56,6 +61,14 @@ Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
     hbox->addLayout(players);
 
     setLayout(hbox);
+
+    // Connectez le QTextEdit pour afficher les messages du jeu
+    connect(game, &Game::messageChanged, this, &Widget::updateMessageBox);
+}
+
+void Widget::updateMessageBox(const QString &message) {
+    // Mettez à jour le QTextEdit avec le nouveau message
+    messageBox->append(message);
 }
 
 Widget::~Widget() {
