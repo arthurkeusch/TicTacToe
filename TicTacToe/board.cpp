@@ -26,9 +26,9 @@ Board::Board(GameState *state, QWidget *parent) : QWidget(parent)
         player1Color = QString::fromStdString(colors[1]);
         player2Color = QString::fromStdString(colors[2]);
     } else {
-        plateauColor = QString::fromStdString("#000000");
-        player1Color = QString::fromStdString("#ffffff");
-        player2Color = QString::fromStdString("#ffffff");
+        plateauColor = QString::fromStdString("#ffffff");
+        player1Color = QString::fromStdString("#000000");
+        player2Color = QString::fromStdString("#000000");
     }
 }
 
