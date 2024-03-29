@@ -16,10 +16,12 @@ signals:
 
 private slots:
     void applySettings();
+    void onValiderClicked();
 
 private:
     QComboBox *comboBoxResolution;
     QPushButton *buttonApply;
+    QComboBox *comboBoxColor;
 };
 
 #endif // SETTINGS_H
