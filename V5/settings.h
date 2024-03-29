@@ -15,13 +15,13 @@ public:
 signals:
 
 private slots:
-    void applySettings();
     void onValiderClicked();
 
 private:
-    QComboBox *comboBoxResolution;
-    QPushButton *buttonApply;
     QComboBox *comboBoxColor;
+    QComboBox *comboBoxPlayer1Color;
+    QComboBox *comboBoxPlayer2Color;
+    void writeFile(const std::string& fileName, const std::string& boardColor, const std::string& P1Color, const std::string& P2Color);
 };
 
 #endif // SETTINGS_H

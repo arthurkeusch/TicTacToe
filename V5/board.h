@@ -31,6 +31,10 @@ private:
     GameState *state;
     QLabel *statusLabel;
     int tileSize;
+    std::vector<std::string> readFile(const std::string& file);
+    QString plateauColor; // Couleur du plateau
+    QString player1Color; // Couleur du joueur 1
+    QString player2Color; // Couleur du joueur 2
 
 public:
     bool allowed;

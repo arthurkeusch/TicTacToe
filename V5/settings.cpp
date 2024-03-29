@@ -2,78 +2,91 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QLabel>
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <filesystem>
+using namespace std;
+
+#include <map>
 
 SettingsWidget::SettingsWidget(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *vbox = new QVBoxLayout();
-
-    QHBoxLayout *resol = new QHBoxLayout();
-
     QHBoxLayout *color = new QHBoxLayout();
 
-
-    comboBoxResolution = new QComboBox(this);
-
-    comboBoxResolution->addItem("640x480");
-
-    comboBoxResolution->addItem("800x600");
-
-    comboBoxResolution->addItem("1024x768");
-
-
     comboBoxColor = new QComboBox(this);
+    std::map<QString, QString> colorMap;
+    colorMap["White"] = "#FFFFFF";
+    colorMap["Black"] = "#000000";
+    colorMap["Red"] = "#FF0000";
+    colorMap["Green"] = "#00FF00";
+    colorMap["Blue"] = "#0000FF";
+    for (const auto& pair : colorMap) {
+        comboBoxColor->addItem(pair.first);
+    }
 
-    comboBoxColor->addItem("#FFC0CB");
+    comboBoxPlayer1Color = new QComboBox(this);
+    for (const auto& pair : colorMap) {
+        comboBoxPlayer1Color->addItem(pair.first);
+    }
 
-    comboBoxColor->addItem("#ADD8E6");
-
-
-    buttonApply = new QPushButton("Apply", this);
+    comboBoxPlayer2Color = new QComboBox(this);
+    for (const auto& pair : colorMap) {
+        comboBoxPlayer2Color->addItem(pair.first);
+    }
 
     QPushButton *quit = new QPushButton("Quit", this);
+    QPushButton *changeColor = new QPushButton("Apply change");
 
-    QPushButton *changeColor = new QPushButton("ChangeColor");
+    color->addWidget(new QLabel("Board color:"));
+    color->addWidget(comboBoxColor);
+    color->addWidget(new QLabel("Player 1 color:"));
+    color->addWidget(comboBoxPlayer1Color);
+    color->addWidget(new QLabel("Player 2 color:"));
+    color->addWidget(comboBoxPlayer2Color);
+    color->addWidget(changeColor);
 
-
-    resol->addWidget(comboBoxResolution, 0);
-
-    resol->addWidget(buttonApply, 1);
-
-    color->addWidget(comboBoxColor, 0);
-
-    color->addWidget(changeColor, 1);
-
-    vbox->addLayout(resol, 0);
-
-    vbox->addLayout(color, 0);
-
+    vbox->addLayout(color);
     vbox->addWidget(quit, 2, Qt::AlignTop);
-
 
     setLayout(vbox);
 
-
-    //connect(comboBoxColor, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SettingsWidget::onPlateauColorChanged);
-
     connect(changeColor, &QPushButton::clicked, this, &SettingsWidget::onValiderClicked);
-
     connect(quit, &QPushButton::clicked, qApp, &QApplication::quit);
-
-    connect(buttonApply, &QPushButton::clicked, this, &SettingsWidget::applySettings);
 }
 
 SettingsWidget::~SettingsWidget()
 {
-    delete comboBoxResolution;
-    delete buttonApply;
-}
 
-void SettingsWidget::applySettings()
-{
-    // Appliquer les paramètres sélectionnés
 }
 
 void SettingsWidget::onValiderClicked()
 {
-    // Appliquer les paramètres sélectionnés
+    QString selectedPlateauColorName = comboBoxColor->currentText();
+    QString selectedPlayer1ColorName = comboBoxPlayer1Color->currentText();
+    QString selectedPlayer2ColorName = comboBoxPlayer2Color->currentText();
+
+    std::map<QString, QString> colorMap;
+    colorMap["White"] = "#FFFFFF";
+    colorMap["Black"] = "#000000";
+    colorMap["Red"] = "#FF0000";
+    colorMap["Green"] = "#00FF00";
+    colorMap["Blue"] = "#0000FF";
+
+    QString selectedPlateauColorHex = colorMap[selectedPlateauColorName];
+    QString selectedPlayer1ColorHex = colorMap[selectedPlayer1ColorName];
+    QString selectedPlayer2ColorHex = colorMap[selectedPlayer2ColorName];
+
+    writeFile("colors.txt", selectedPlateauColorHex.toStdString(), selectedPlayer1ColorHex.toStdString(), selectedPlayer2ColorHex.toStdString());
+}
+
+
+void SettingsWidget::writeFile(const std::string& fileName, const std::string& boardColor, const std::string& P1Color, const std::string& P2Color) {
+    ofstream file(fileName.c_str());
+    file << boardColor << endl;
+    file << P1Color << endl;
+    file << P2Color << endl;
 }
