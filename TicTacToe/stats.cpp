@@ -38,7 +38,6 @@ StatsWidget::StatsWidget(QWidget *parent) : QWidget(parent) {
 }
 
 StatsWidget::~StatsWidget() {
-    // Nettoyer les QLabel
     for (QLabel *label : statLabels) {
         delete label;
     }
@@ -75,8 +74,6 @@ void StatsWidget::refreshStats() {
 void StatsWidget::resetStats(const std::string& fileName) {
     std::ofstream file(fileName);
     file << "vide" << std::endl;
-
-    // Supprimer les anciens labels du layout
     QLayoutItem *child;
     while ((child = layout()->takeAt(0)) != nullptr) {
         if (QWidget *widget = child->widget()) {

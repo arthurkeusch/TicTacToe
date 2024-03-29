@@ -30,7 +30,6 @@ private:
     GameLogic *logic;
     GameState *state;
     void setNextMove(int&);
-
     void writeFile(const std::string& file,  int totalGame, int winGameP1, int winGameP2, int loseGameP1, int loseGameP2, int nullGame);
     std::vector<std::string> readFile(const std::string& file);
 

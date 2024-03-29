@@ -8,33 +8,28 @@
 #include <fstream>
 #include <vector>
 #include <filesystem>
-using namespace std;
-
 #include <map>
 
-SettingsWidget::SettingsWidget(QWidget *parent) : QWidget(parent)
-{
+using namespace std;
+
+SettingsWidget::SettingsWidget(QWidget *parent) : QWidget(parent) {
     QVBoxLayout *vbox = new QVBoxLayout();
     QHBoxLayout *color = new QHBoxLayout();
 
     comboBoxColor = new QComboBox(this);
+    comboBoxPlayer1Color = new QComboBox(this);
+    comboBoxPlayer2Color = new QComboBox(this);
+
     std::map<QString, QString> colorMap;
     colorMap["White"] = "#FFFFFF";
     colorMap["Black"] = "#000000";
     colorMap["Red"] = "#FF0000";
     colorMap["Green"] = "#00FF00";
     colorMap["Blue"] = "#0000FF";
+
     for (const auto& pair : colorMap) {
         comboBoxColor->addItem(pair.first);
-    }
-
-    comboBoxPlayer1Color = new QComboBox(this);
-    for (const auto& pair : colorMap) {
         comboBoxPlayer1Color->addItem(pair.first);
-    }
-
-    comboBoxPlayer2Color = new QComboBox(this);
-    for (const auto& pair : colorMap) {
         comboBoxPlayer2Color->addItem(pair.first);
     }
 
@@ -58,13 +53,11 @@ SettingsWidget::SettingsWidget(QWidget *parent) : QWidget(parent)
     connect(quit, &QPushButton::clicked, qApp, &QApplication::quit);
 }
 
-SettingsWidget::~SettingsWidget()
-{
+SettingsWidget::~SettingsWidget() {
 
 }
 
-void SettingsWidget::onValiderClicked()
-{
+void SettingsWidget::onValiderClicked() {
     QString selectedPlateauColorName = comboBoxColor->currentText();
     QString selectedPlayer1ColorName = comboBoxPlayer1Color->currentText();
     QString selectedPlayer2ColorName = comboBoxPlayer2Color->currentText();
@@ -82,7 +75,6 @@ void SettingsWidget::onValiderClicked()
 
     writeFile("colors.txt", selectedPlateauColorHex.toStdString(), selectedPlayer1ColorHex.toStdString(), selectedPlayer2ColorHex.toStdString());
 }
-
 
 void SettingsWidget::writeFile(const std::string& fileName, const std::string& boardColor, const std::string& P1Color, const std::string& P2Color) {
     ofstream file(fileName.c_str());

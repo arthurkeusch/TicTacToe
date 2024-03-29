@@ -1,5 +1,12 @@
 #include "game.h"
 
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <filesystem>
+
+using namespace std;
+
 Game::Game(Player *player1, Player *player2, Player *player3, Player *player4, Board *board, GameState *state, QWidget *parent) : QWidget(parent)
 {
     this->player1 = player1;
@@ -20,7 +27,6 @@ Game::Game(Player *player1, Player *player2, Player *player3, Player *player4, B
 
     timer = new QTimer();
     connect(timer, &QTimer::timeout, this, &Game::nextRound);
-
 }
 
 void Game::changeNextPlayer1(QString s) {
@@ -65,8 +71,7 @@ void Game::restart() {
     nextRound();
 }
 
-void Game::nextRound()
-{
+void Game::nextRound() {
     delay(100);
     if (!(logic->gameOver(state) || logic->gameWon(state))) {
         if (currentPlayer->isHuman()) {
@@ -88,8 +93,7 @@ void Game::nextRound()
         if (logic->gameWon(state)) {
             QString message = "La partie est terminée. Le joueur " + QString::number(state->otherPlayer(state->getCurrentPlayer())) + " a gagné!";
             emit messageChanged(message);
-        }
-        else if (logic->gameOver(state)) {
+        } else if (logic->gameOver(state)) {
             QString message = "La partie est terminée. Aucun coup n'est possible.";
             emit messageChanged(message);
         }
@@ -167,27 +171,20 @@ void Game::setNextMove(int &move) {
 }
 
 
-void Game::delay(int ms)
-{
+void Game::delay(int ms) {
     QTime dieTime= QTime::currentTime().addMSecs(ms);
     while (QTime::currentTime() < dieTime)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <filesystem>
-using namespace std;
-
 void Game::writeFile(const std::string& fileName, int totalGame, int winGameP1, int winGameP2, int loseGameP1, int loseGameP2, int nullGame) {
     ofstream file(fileName.c_str());
-    file << totalGame << endl;      // Nombre de partie totale
-    file << winGameP1 << endl;      // Nombre de partie gagné par le joueur 1
-    file << winGameP2 << endl;      // Nombre de partie gagné par le joueur 2
-    file << loseGameP1 << endl;     // Nombre de partie perdu par le joueur 1
-    file << loseGameP2 << endl;     // Nombre de partie perdu par le joueur 2
-    file << nullGame << endl;       // Nombre de partie null
+    file << totalGame << endl;
+    file << winGameP1 << endl;
+    file << winGameP2 << endl;
+    file << loseGameP1 << endl;
+    file << loseGameP2 << endl;
+    file << nullGame << endl;
 }
 
 std::vector<std::string> Game::readFile(const std::string& fileName) {

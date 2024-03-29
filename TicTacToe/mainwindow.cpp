@@ -2,43 +2,29 @@
 #include "stats.h"
 #include "settings.h"
 #include "ui_mainwindow.h"
-
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-
-void MainWindow::on_pushButton_3_clicked() //Home
-{
-    ui->stackedWidget->setCurrentIndex(0);
-}
-
-
-
-
-
-
-
-
-#include <QApplication>
-#include <QIcon>
-#include <iostream>
 #include "widget.h"
 #include "board.h"
 #include "agent.h"
 #include "humanplayer.h"
 #include "game.h"
 
-void MainWindow::on_start_clicked()
-{
+#include <QApplication>
+#include <QIcon>
+#include <iostream>
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
+    ui->setupUi(this);
+}
+
+MainWindow::~MainWindow() {
+    delete ui;
+}
+
+void MainWindow::on_pushButton_3_clicked() {
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_start_clicked() {
     Player *player1 = new HumanPlayer(1);
     Player *player2 = new HumanPlayer(2);
     Player *player3 = new Agent(1);
@@ -59,33 +45,14 @@ void MainWindow::on_start_clicked()
     ui->stackedWidget->setCurrentWidget(window);
 }
 
-
-
-
-
-
-
-
-
-
-void MainWindow::on_pushButton_2_clicked() //Stats
-{
+void MainWindow::on_pushButton_2_clicked() {
     StatsWidget *statsWidget = new StatsWidget();
     ui->stackedWidget->addWidget(statsWidget);
     ui->stackedWidget->setCurrentWidget(statsWidget);
 }
 
-
-
-
-
-
-void MainWindow::on_pushButton_clicked() //Settings
-{
+void MainWindow::on_pushButton_clicked() {
     SettingsWidget * settings = new SettingsWidget();
     ui->stackedWidget->addWidget(settings);
     ui->stackedWidget->setCurrentWidget(settings);
 }
-
-
-

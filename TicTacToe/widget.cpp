@@ -1,4 +1,9 @@
 #include "widget.h"
+#include "board.h"
+#include "gamestate.h"
+#include "agent.h"
+#include "humanplayer.h"
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QTextEdit>
@@ -6,11 +11,6 @@
 #include <QPushButton>
 #include <QApplication>
 #include <QStringList>
-
-#include "board.h"
-#include "gamestate.h"
-#include "agent.h"
-#include "humanplayer.h"
 
 Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
 {
@@ -21,7 +21,6 @@ Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
 
     statusLabel = new QLabel("Have Fun", this);
 
-    // Créez un QTextEdit pour afficher les messages
     messageBox = new QTextEdit(this);
     messageBox->setReadOnly(true);
 
@@ -62,12 +61,10 @@ Widget::Widget(Board *board, Game *game, QWidget *parent) : QWidget(parent)
 
     setLayout(hbox);
 
-    // Connectez le QTextEdit pour afficher les messages du jeu
     connect(game, &Game::messageChanged, this, &Widget::updateMessageBox);
 }
 
 void Widget::updateMessageBox(const QString &message) {
-    // Mettez à jour le QTextEdit avec le nouveau message
     messageBox->append(message);
 }
 

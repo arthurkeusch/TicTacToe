@@ -1,6 +1,7 @@
 #include "gamelogic.h"
 
 GameLogic::GameLogic() {
+
 }
 
 void GameLogic::generateValidMoves(GameState *state, int *validMoves) {

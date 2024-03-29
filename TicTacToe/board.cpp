@@ -1,9 +1,13 @@
 #include "board.h"
+
 #include <cmath>
-
-#include <iostream>
 #include <QMouseEvent>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <filesystem>
 
+using namespace std;
 
 Board::Board(GameState *state, QWidget *parent) : QWidget(parent)
 {
@@ -19,8 +23,6 @@ Board::Board(GameState *state, QWidget *parent) : QWidget(parent)
     allowed = false;
 
     std::vector<std::string> colors = readFile("colors.txt");
-    std::cout << "Taille de colors : " << colors.size() << std::endl;
-
     if (colors.size() >= 3) {
         plateauColor = QString::fromStdString(colors[0]);
         player1Color = QString::fromStdString(colors[1]);
@@ -49,23 +51,23 @@ void Board::paintEvent(QPaintEvent *e) {
         for (int j = 0; j < a; j++) {
             switch(state->getBoard()[i*a+j]) {
                 case 0:
-                    painter.setBrush(QBrush(QColor(plateauColor))); // Utiliser player2Color pour le remplissage des cercles
+                    painter.setBrush(QBrush(QColor(plateauColor)));
                     painter.drawRect(j*tileSize, i*tileSize, tileSize, tileSize);
                     break;
                 case 1:
-                    painter.setBrush(QBrush(QColor(plateauColor))); // Utiliser plateauColor pour le remplissage des cases
+                    painter.setBrush(QBrush(QColor(plateauColor)));
                     painter.drawRect(j*tileSize, i*tileSize, tileSize, tileSize);
-                    painter.setPen(QPen(QBrush(QColor(player1Color)), 4)); // Utiliser player1Color pour le contour des croix
+                    painter.setPen(QPen(QBrush(QColor(player1Color)), 4));
                     painter.drawLine(j*tileSize+10, i*tileSize+10, j*tileSize+tileSize-10, i*tileSize+tileSize-10);
                     painter.drawLine(j*tileSize+10, i*tileSize+tileSize-10, j*tileSize+tileSize-10, i*tileSize+10);
-                    painter.setPen(QPen(QBrush(QColor("#000000")), 4)); // Réinitialiser la couleur du contour
+                    painter.setPen(QPen(QBrush(QColor("#000000")), 4));
                     break;
                 case 2:
-                    painter.setBrush(QBrush(QColor(plateauColor))); // Utiliser plateauColor pour le remplissage des cases
+                    painter.setBrush(QBrush(QColor(plateauColor)));
                     painter.drawRect(j*tileSize, i*tileSize, tileSize, tileSize);
-                    painter.setPen(QPen(QBrush(QColor(player2Color)), 4)); // Utiliser player2Color pour le contour des cercles
+                    painter.setPen(QPen(QBrush(QColor(player2Color)), 4));
                     painter.drawEllipse(j*tileSize+10, i*tileSize+10, 80, 80);
-                    painter.setPen(QPen(QBrush(QColor("#000000")), 4)); // Réinitialiser la couleur du contour
+                    painter.setPen(QPen(QBrush(QColor("#000000")), 4));
                     break;
             }
         }
@@ -74,11 +76,7 @@ void Board::paintEvent(QPaintEvent *e) {
 
 void Board::mousePressEvent(QMouseEvent *e) {
     std::cout << state->getCurrentPlayer() << std::endl;
-
     if (allowed){
-        std::cout << "mousePressEvent" << std::endl;
-
-        // Get clicked tile
         int x, y;
         x = e->pos().rx() / 100;
         y = e->pos().ry() / 100;
@@ -93,12 +91,6 @@ void Board::getClicked(int& val) {
 void Board::setAllowed(bool value) {
     this->allowed = value;
 }
-
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <filesystem>
-using namespace std;
 
 std::vector<std::string> Board::readFile(const std::string& fileName) {
     std::vector<std::string> lines;
